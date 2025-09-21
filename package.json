@@ -5,6 +5,10 @@
   "dependencies": {
     "node-fetch": "^3.3.2",
     "googleapis": "^115.0.0",
-    "firebase-admin": "^11.11.0"
+    "firebase-admin": "^11.11.0",
+    "node-ical": "^0.15.0"
+  },
+  "scripts": {
+    "start": "vercel dev"
   }
 }
