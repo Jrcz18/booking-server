@@ -3,12 +3,10 @@ import { NextResponse } from 'next/server';
 import admin from 'firebase-admin';
 
 if (!admin.apps.length) {
+  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+
   admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-    }),
+    credential: admin.credential.cert(serviceAccount),
   });
 }
 
@@ -17,7 +15,6 @@ const db = admin.firestore();
 export async function POST(req) {
   try {
     const { queryType, params } = await req.json();
-
     let result;
 
     switch (queryType) {
@@ -35,7 +32,6 @@ export async function POST(req) {
           .then(snapshot => snapshot.docs.map(doc => doc.data()));
         break;
 
-      // Add more query handlers here
       default:
         result = { error: 'Unknown queryType' };
     }
